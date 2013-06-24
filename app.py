@@ -12,23 +12,30 @@ class ArmageddonByArrows(QtGui.QMainWindow):
         self.ui = Ui_mainWindow()
         self.ui.setupUi(self)
         self.armageddon = Armageddon()
-        QtCore.QObject.connect(self.ui.leftButton, QtCore.SIGNAL("clicked()"), self.move_left)
-        QtCore.QObject.connect(self.ui.rightButton, QtCore.SIGNAL("clicked()"), self.move_right)
-        QtCore.QObject.connect(self.ui.upButton, QtCore.SIGNAL("clicked()"), self.move_up)
-        QtCore.QObject.connect(self.ui.downButton, QtCore.SIGNAL("clicked()"), self.move_down)
+        QtCore.QObject.connect(self.ui.leftButton, QtCore.SIGNAL("pressed()"), self.move_left)
+        QtCore.QObject.connect(self.ui.rightButton, QtCore.SIGNAL("pressed()"), self.move_right)
+        QtCore.QObject.connect(self.ui.upButton, QtCore.SIGNAL("pressed()"), self.move_up)
+        QtCore.QObject.connect(self.ui.downButton, QtCore.SIGNAL("pressed()"), self.move_down)
+        QtCore.QObject.connect(self.ui.leftButton, QtCore.SIGNAL("released()"), self.stop_movement)
+        QtCore.QObject.connect(self.ui.rightButton, QtCore.SIGNAL("released()"), self.stop_movement)
+        QtCore.QObject.connect(self.ui.upButton, QtCore.SIGNAL("released()"), self.stop_movement)
+        QtCore.QObject.connect(self.ui.downButton, QtCore.SIGNAL("released()"), self.stop_movement)
         QtCore.QObject.connect(self.ui.fireButton, QtCore.SIGNAL("clicked()"), self.fire)
 
     def move_left(self):
-        self.armageddon.send_move(self.armageddon.LEFT, 100)
+        self.armageddon.send_cmd(self.armageddon.LEFT)
 
     def move_right(self):
-        self.armageddon.send_move(self.armageddon.RIGHT, 100)
+        self.armageddon.send_cmd(self.armageddon.RIGHT)
 
     def move_up(self):
-        self.armageddon.send_move(self.armageddon.UP, 100)
+        self.armageddon.send_cmd(self.armageddon.UP)
 
     def move_down(self):
-        self.armageddon.send_move(self.armageddon.DOWN, 100)
+        self.armageddon.send_cmd(self.armageddon.DOWN)
+
+    def stop_movement(self):
+        self.armageddon.send_cmd(self.armageddon.STOP)
 
     def fire(self):
         self.armageddon.send_cmd(self.armageddon.FIRE)
